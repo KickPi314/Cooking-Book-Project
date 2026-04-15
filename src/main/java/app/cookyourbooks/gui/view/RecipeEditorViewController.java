@@ -2,6 +2,7 @@ package app.cookyourbooks.gui.view;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -16,13 +17,17 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 import app.cookyourbooks.gui.editor.IngredientEditCell;
 import app.cookyourbooks.gui.editor.RecipeEditorViewModelImpl;
 import app.cookyourbooks.gui.editor.StepEditCell;
+import app.cookyourbooks.gui.export.RecipePdfExporter;
 import app.cookyourbooks.gui.shared.EditableIngredient;
 import app.cookyourbooks.gui.viewmodel.RecipeEditorViewModel;
 import app.cookyourbooks.model.Instruction;
+import app.cookyourbooks.model.Recipe;
 import app.cookyourbooks.services.LibrarianService;
 
 /**
@@ -60,6 +65,7 @@ public class RecipeEditorViewController {
   @FXML private Label readCookTimeLabel;
   @FXML private ListView<String> readIngredientList;
   @FXML private ListView<String> readStepsList;
+  @FXML private Button exportPdfButton;
   @FXML private Button editButton;
   @FXML private Label collectionLabel;
 
@@ -187,6 +193,9 @@ public class RecipeEditorViewController {
           viewModel.toggleEditMode();
         });
     editButton.disableProperty().bind(viewModel.isSavingProperty());
+
+    exportPdfButton.setOnAction(e -> exportCurrentRecipeToPdf());
+    exportPdfButton.disableProperty().bind(viewModel.isSavingProperty());
   }
 
   private static final double LIST_ROW_HEIGHT = 28.0;
@@ -421,6 +430,50 @@ public class RecipeEditorViewController {
       editableSteps.remove(index);
       pushStepsToViewModel(); // mark dirty
     }
+  }
+
+  /** Opens a save dialog and exports the currently loaded recipe to a PDF file. */
+  private void exportCurrentRecipeToPdf() {
+    if (!(viewModel instanceof RecipeEditorViewModelImpl impl)) {
+      return;
+    }
+
+    Recipe currentRecipe = impl.getCurrentRecipe();
+    if (currentRecipe == null) {
+      viewModel.statusMessageProperty().set("No recipe loaded to export.");
+      return;
+    }
+
+    Window ownerWindow = readPanel.getScene() == null ? null : readPanel.getScene().getWindow();
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Export Recipe PDF");
+    fileChooser
+        .getExtensionFilters()
+        .add(new FileChooser.ExtensionFilter("PDF files (*.pdf)", "*.pdf"));
+    fileChooser.setInitialFileName(safePdfFileName(currentRecipe.getTitle()));
+
+    java.io.File selectedFile = fileChooser.showSaveDialog(ownerWindow);
+    if (selectedFile == null) {
+      return;
+    }
+
+    try {
+      RecipePdfExporter.exportToPdf(currentRecipe, selectedFile.toPath());
+      viewModel.statusMessageProperty().set("Exported PDF: " + selectedFile.getName());
+    } catch (java.io.IOException ex) {
+      viewModel.statusMessageProperty().set("PDF export failed: " + ex.getMessage());
+    }
+  }
+
+  private static String safePdfFileName(String title) {
+    String sanitized = title.replaceAll("[\\\\/:*?\"<>|]", "_").strip();
+    if (sanitized.isEmpty()) {
+      return "recipe.pdf";
+    }
+    if (sanitized.toLowerCase(Locale.ROOT).endsWith(".pdf")) {
+      return sanitized;
+    }
+    return sanitized + ".pdf";
   }
 
   /** Pushes the current editable steps list to the ViewModel as an instruction list. */

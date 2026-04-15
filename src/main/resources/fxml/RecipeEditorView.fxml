@@ -24,13 +24,20 @@
         <VBox fx:id="readContent" spacing="0">
             <padding><Insets top="28" right="36" bottom="36" left="36"/></padding>
 
-            <!-- Title row: large title left, Edit button right -->
+            <!-- Title row: large title left, Export and Edit buttons right -->
             <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 8 0;">
                 <Label fx:id="titleLabel"
                        HBox.hgrow="ALWAYS"
                        maxWidth="Infinity"
                        wrapText="true"
                        style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
+                <Button fx:id="exportPdfButton" text="Export PDF"
+                        style="-fx-background-color: #eeeeee;
+                               -fx-text-fill: #333;
+                               -fx-font-size: 13px;
+                               -fx-padding: 7 16 7 16;
+                               -fx-background-radius: 6;"/>
+                <Region prefWidth="8"/>
                 <Button fx:id="editButton" text="Edit"
                         style="-fx-background-color: #4A90D9;
                                -fx-text-fill: white;
