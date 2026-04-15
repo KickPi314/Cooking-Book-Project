@@ -93,6 +93,9 @@ dependencies {
 
     // dotenv-java for loading .env files
     implementation libs.dotenv.java
+
+    // PDFBox for recipe export to PDF
+    implementation 'org.apache.pdfbox:pdfbox:3.0.1'
 }
 
 application {

@@ -394,6 +394,17 @@ public class RecipeEditorViewModelImpl implements RecipeEditorViewModel {
   }
 
   /**
+   * Returns the currently loaded recipe object.
+   *
+   * <p>Not on the interface — used by the View for read-only export operations.
+   *
+   * @return loaded recipe, or null if no recipe is loaded
+   */
+  public @Nullable Recipe getCurrentRecipe() {
+    return originalRecipe;
+  }
+
+  /**
    * Overrides the instructions that will be used when {@link #save()} is called.
    *
    * <p>Not on the interface — called by {@link RecipeEditorViewController} just before calling
