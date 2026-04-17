@@ -107,7 +107,8 @@ public final class RecipePdfExporter {
     }
 
     StringBuilder out = new StringBuilder(text.length());
-    for (int i = 0; i < text.length(); ) {
+    int i = 0;
+    while (i < text.length()) {
       final int cp = text.codePointAt(i);
       i += Character.charCount(cp);
 

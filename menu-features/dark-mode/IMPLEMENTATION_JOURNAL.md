@@ -1,6 +1,6 @@
 ## 1. Git History (Incremental Progress)
 
-Dark mode was implemented in small, reviewable commits.
+Dark mode was implemented in small and reviewable commits.
 
 - e3c1568: Added the dark mode toggle button in the main layout and wired root pane id for styling.
 - 2194d80: Added controller-side dark mode state, toggle handler, and preference persistence.
@@ -13,12 +13,14 @@ Dark mode was implemented in small, reviewable commits.
 - bfa0b89: Refactored dark mode logic into its own class for separation of concerns.
 - a1829d2: Polished toggle placement and CSS cleanup for visual consistency.
 - 4f04bbe: Fixed dark mode test reliability issues.
+- a1829d2: Switched dark mode button to the other side and clean up CSS file.
+- 7dc8c59: Documentation writing.
 
-This sequence shows: feature scaffold -> behavior -> styling -> CI stabilization -> test hardening -> refactor.
+Sequence: feature scaffold -> behavior -> styling -> CI stabilization -> test hardening -> fixing bugs and visual artifacts -> documenting the implementation
 
 ## 2. PR History and Review
 
-- PR #3: https://github.com/neu-cs3100/sp26-hw-cyb12-group-4616/pull/3
+- PR #3: https://github.com/neu-cs3100/sp26-hw-cyb12-group-4616/pull/3impl
 	- Review-driven follow-ups included CI fixes for JavaFX native dependencies and timeout stabilization.
 - PR #4: https://github.com/neu-cs3100/sp26-hw-cyb12-group-4616/pull/4
 	- Continued refinement and integration cleanup on the dark mode branch.
@@ -36,7 +38,7 @@ Meaningful review outcomes captured in commit history:
 ### Decision: Persist dark mode using Java Preferences and manage feature logic in a dedicated DarkMode class
 
 Context:
-The feature needed to support theme toggle, survive app restart, and remain explainable and maintainable for TA review.
+The feature needed to support theme toggle and survive app restart.
 
 Option A: Session-only state in MainViewController
 - Pros: simplest implementation.
@@ -51,14 +53,13 @@ Option C (chosen): Persisted state plus dedicated DarkMode class
 - Cons: one extra class and small wiring overhead.
 
 Rationale:
-Option C balanced user experience and code quality best. Persistence was required for usability, and extracting logic from MainViewController reduced coupling and made dark mode behavior easier to reason about and test.
+Option C balanced user experience and code quality best. Persistence was required for usability, and extracting logic from MainViewController reduced coupling and made dark mode behavior easier to reason about and testability.
 
 ## 4. Testing and Quality
 
 ### Unit tests for the feature
 - Added a dedicated dark-mode GUI test file: [src/test/java/app/cookyourbooks/gui/DarkModeGuiTest.java](src/test/java/app/cookyourbooks/gui/DarkModeGuiTest.java).
 - Tests cover default light-mode startup, toggling dark mode on, toggling back off, and persistence writes via Java Preferences.
-- General GUI navigation tests remain in [src/test/java/app/cookyourbooks/gui/GuiEndToEndExampleTest.java](src/test/java/app/cookyourbooks/gui/GuiEndToEndExampleTest.java) to keep dark mode verification isolated.
 
 ### Accessibility check
 - Dark mode toggle supports keyboard navigation because it is a standard JavaFX Button.
@@ -66,6 +67,5 @@ Option C balanced user experience and code quality best. Persistence was require
 - Sidebar navigation remains keyboard-friendly through standard JavaFX controls.
 
 ### Known limitations
-- Persistence is tied to local Java Preferences storage for the current user profile/environment.
 - Some feature-specific custom-styled controls may need additional dark-mode polishing.
-- No automated contrast or screen-reader audit is currently included; accessibility verification is currently manual for keyboard flow.
+- No automated contrast or screen-reader is currently included.
