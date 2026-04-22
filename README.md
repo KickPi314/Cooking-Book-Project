@@ -1,5 +1,7 @@
 # CookYourBooks — Cooking Book App
 
+![CookYourBooks Project Overview](https://github.com/user-attachments/assets/162212b9-00b9-4f2f-96bf-6eb0fb1c49ca)
+
 CookYourBooks is a full‑stack (app + data + UI) cooking book project that helps you **collect recipes, browse your personal library, and interact with your cookbook through both a GUI and a CLI**.
 
 It’s built as a **Gradle Java application** with a layered architecture (`model`, `repository`, `services`, adapters) and a JavaFX-based interface (FXML + CSS).
