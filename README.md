@@ -68,3 +68,42 @@ It’s built as a **Gradle Java application** with a layered architecture (`mode
 ├── design/
 └── config/
 ```
+---
+
+## Getting Started
+
+### Prerequisites
+- A recent **JDK** installed (Java 17+ recommended)
+- Gradle wrapper is included (`./gradlew`), so you don’t need Gradle installed separately.
+
+### Build
+```bash
+./gradlew build
+```
+
+### Run
+Depending on how your `CookYourBooksApp` is configured, you can typically run via:
+
+```bash
+./gradlew run
+```
+
+> If you run into JavaFX runtime issues, confirm your JDK/JavaFX setup matches the project’s Gradle configuration.
+
+---
+
+## Data & Recipes
+
+- The main library file is: **`cyb-library.json`**
+- Additional recipe content and examples may live under:
+  - `sample-recipes/`
+
+If you want to reset your environment, start by backing up and/or replacing `cyb-library.json`.
+
+---
+
+## Testing
+
+```bash
+./gradlew test
+```
